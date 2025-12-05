@@ -23,7 +23,7 @@ async function main() {
     // 2) Hasher le mdp
     const hashedPassword = await bcrypt.hash("mdp", 10);
 
-    // 3) Créer l'utilisateur lié à l'équipe
+    // 3) Créer l'utilisateurs lié à l'équipe
     await prisma.utilisateur.create({
         data: {
             prenom: "Theo",
