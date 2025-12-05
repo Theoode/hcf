@@ -1,0 +1,28 @@
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Equipe {
+  id_equipe     Int          @id @default(autoincrement())
+  nom_equipe    String
+  date_creation DateTime     @default(now())
+  utilisateurs  Utilisateur[]
+}
+
+model Utilisateur {
+  id_utilisateur Int      @id @default(autoincrement())
+  prenom         String
+  nom            String
+  numero         String
+  mail           String   @unique
+  mdp_hash       String
+  date_creation  DateTime @default(now())
+  id_equipe      Int?
+  equipe         Equipe?  @relation(fields: [id_equipe], references: [id_equipe])
+}
