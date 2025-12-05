@@ -1,14 +1,26 @@
+"use client";
+
 import React from "react";
+import { useRouter } from "next/navigation";
 
 interface CardProps {
     title: string;
     image: string;
+    redirect: string; // chemin où rediriger
 }
 
-const Card: React.FC<CardProps> = ({ title, image }) => {
-    return (
-        <div className="relative w-5/6 max-w-md h-30 rounded-xl overflow-hidden shadow-lg mx-auto">
+const Card: React.FC<CardProps> = ({ title, image, redirect }) => {
+    const router = useRouter();
 
+    const handleClick = () => {
+        router.push(redirect);
+    };
+
+    return (
+        <div
+            className="relative w-5/6 max-w-md h-30 rounded-xl overflow-hidden shadow-lg mx-auto cursor-pointer"
+            onClick={handleClick} // clic sur toute la card
+        >
             {/* Image */}
             <img
                 src={image}
@@ -20,7 +32,7 @@ const Card: React.FC<CardProps> = ({ title, image }) => {
             <div
                 className="absolute inset-0 pointer-events-none"
                 style={{
-                    background: "linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0))"
+                    background: "linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0))",
                 }}
             />
 
@@ -33,7 +45,6 @@ const Card: React.FC<CardProps> = ({ title, image }) => {
                     {title}
                 </h2>
             </div>
-
         </div>
     );
 };
