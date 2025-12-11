@@ -47,30 +47,35 @@ export default function LoginPage() {
 
                 {error && <p className="text-red-500 mb-4">{error}</p>}
 
-                <label className="block mb-2 font-medium">Email</label>
+                <img
+                    src="/club.png"
+                    alt="Logo de mon club"
+                    className="h-32 w-32 object-contain object-center mx-auto mb-4"
+                />
+
+
+
+                <label className="block mb-2 font-medium text-black">Email</label>
                 <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full p-2 mb-4 border rounded"
+                    className="w-full p-2 mb-4 border rounded text-black"
                     required
                 />
 
-                <label className="block mb-2 font-medium">Mot de passe</label>
+                <label className="block mb-2 font-medium text-black">Mot de passe</label>
                 <input
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full p-2 mb-6 border rounded"
+                    className="w-full p-2 mb-6 border rounded text-black"
                     required
                 />
 
                 <button
                     type="submit"
-                    className="w-full text-white p-2 rounded transition "
-                    style={{
-                        background: "linear-gradient(to right, #112541, #E91B22)"
-                    }}
+                    className="w-full text-white p-2 rounded transition bg-black cursor-pointer"
                 >
                     Se connecter
                 </button>

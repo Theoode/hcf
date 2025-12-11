@@ -17,20 +17,16 @@ const PlayerCard: React.FC<{ player: Utilisateur; id: string }> = ({ player, id 
     const style = {
         transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
         cursor: "grab",
-        touchAction: "none", // essentiel pour le drag sur mobile
+        touchAction: "none",
     };
 
     return (
-        <div
-            ref={setNodeRef}
-            {...listeners}
-            {...attributes}
-            style={style}
-            className="w-20 h-20 sm:w-24 sm:h-24 bg-blue-600 text-white flex flex-col items-center justify-center rounded shadow-lg relative"
-        >
+        <div ref={setNodeRef}{...listeners}{...attributes} style={style}
+             className="w-20 h-20 sm:w-24 sm:h-24 bg-[#15262C] opacity-80 text-white flex flex-col items-center justify-center rounded shadow-lg relative border-2">
+            <div className="text-xs">{player.numero}</div>
             <div className="font-bold text-xs sm:text-sm">{player.nom}</div>
             <div className="text-xs sm:text-sm">{player.prenom}</div>
-            <div className="text-xs">{player.numero}</div>
+
         </div>
     );
 };
@@ -46,13 +42,14 @@ const Slot: React.FC<{
     return (
         <div
             ref={setNodeRef}
-            className={`w-20 h-20 sm:w-32 sm:h-32 bg-green-400 rounded border-2 border-dashed border-white flex items-center justify-center relative ${
-                isOver ? "bg-green-500" : ""
+            className={`w-20 h-20 sm:w-32 sm:h-32 bg-green-400/50 rounded border-2 border-dashed border-white flex items-center justify-center relative ${
+                isOver ? "bg-green-500/70" : ""
             }`}
         >
             {player && (
                 <>
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-blue-600 text-white flex flex-col items-center justify-center rounded shadow-lg relative">
+                    {/* Le PlayerCard à l'intérieur du slot a été rendu plus opaque pour une meilleure visibilité */}
+                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-blue-600/90 text-white flex flex-col items-center justify-center rounded shadow-lg relative">
                         <div className="font-bold text-xs sm:text-sm">{player.nom}</div>
                         <div className="text-xs sm:text-sm">{player.prenom}</div>
                         <div className="text-xs">{player.numero}</div>
@@ -60,7 +57,7 @@ const Slot: React.FC<{
                         {/* Croix pour retirer */}
                         <button
                             onClick={() => onRemove && onRemove(player)}
-                            className="absolute top-0 right-0 w-5 h-5 sm:w-6 sm:h-6 bg-red-600 text-white rounded-full flex items-center justify-center text-xs"
+                            className="absolute top-0 right-0 w-5 h-5 sm:w-6 sm:h-6 bg-red-600/90 text-white rounded-full flex items-center justify-center text-xs"
                         >
                             ×
                         </button>
@@ -119,8 +116,10 @@ export default function HockeyBoard() {
 
     return (
         <DndContext onDragEnd={handleDragEnd}>
-            <main className="mt-10 p-4 flex flex-col items-center gap-4">
-                <h1 className="text-xl sm:text-2xl font-bold mb-4 text-center">Terrain de Hockey - Mobile Friendly</h1>
+            {}
+            <main className=" bg-[#1E1E1E] flex flex-col items-center gap-4">
+
+                <div className=" rotate-90 bg-[url('/terrain.png')] bg-contain bg-no-repeat bg-center flex items-center justify-center w-full h-[50vh] "></div>
 
                 <div className="flex justify-center gap-2 sm:gap-4 flex-wrap">
                     {slots.map((playerInSlot, index) => (
@@ -138,7 +137,10 @@ export default function HockeyBoard() {
                         <PlayerCard key={player.id_utilisateur} player={player} id={`player-${player.id_utilisateur}`} />
                     ))}
                 </div>
+
             </main>
+
+
         </DndContext>
     );
 }
