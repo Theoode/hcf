@@ -1,4 +1,6 @@
+/* globals.css */
 @import "tailwindcss";
+
 
 .font-montserrat {
     font-family: var(--font-montserrat), sans-serif;

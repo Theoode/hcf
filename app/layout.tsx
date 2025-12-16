@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html lang="fr">
+        <html lang="FR" suppressHydrationWarning>
         <body className={`${MontserratFont.variable} font-montserrat antialiased`}>
         {children}
         </body>
