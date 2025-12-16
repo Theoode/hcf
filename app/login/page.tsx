@@ -36,7 +36,7 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-10 relative bg-[#F0F0F0] dark:bg-gray-900 transition-colors">
+        <div className="min-h-screen flex items-center justify-center p-10 relative bg-[#F7F7F7] transition-colors">
             <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-md w-full max-w-sm transition-colors">
                 {error && <p className="text-red-500 mb-4">{error}</p>}
 
