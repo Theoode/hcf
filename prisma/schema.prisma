@@ -7,13 +7,12 @@ datasource db {
   provider = "postgresql"
 }
 
-
 model Categorie {
-  id_categorie Int           @id @default(autoincrement())
-  nom          String
-  date_creation DateTime     @default(now())
-  utilisateurs Utilisateur[]
-  matchs       Match[]
+  id_categorie  Int           @id @default(autoincrement())
+  nom           String
+  date_creation DateTime      @default(now())
+  utilisateurs  Utilisateur[]
+  matchs        Match[]
 }
 
 model Utilisateur {
@@ -29,13 +28,13 @@ model Utilisateur {
 }
 
 model Match {
-  id_match      Int      @id @default(autoincrement())
-  date_match    DateTime
-  lieu          String?
-  date_creation DateTime @default(now())
-  id_categorie  Int
-  categorie     Categorie @relation(fields: [id_categorie], references: [id_categorie])
-  lignes        Ligne[]
+  id_match       Int      @id @default(autoincrement())
+  date_match     DateTime
+  lieu           String?
+  date_creation  DateTime @default(now())
+  id_categorie   Int
+  categorie      Categorie @relation(fields: [id_categorie], references: [id_categorie])
+  lignes         Ligne[]
   score_domicile Int
   score_exterieur Int
 }

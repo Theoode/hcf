@@ -6,7 +6,10 @@ import Modal from "@/components/Modal";
 
 interface Props {
     joueurs: number;
+    assignations: Record<number, Joueur>;
+    setAssignations: React.Dispatch<React.SetStateAction<Record<number, Joueur>>>;
 }
+
 
 export default function GrilleJoueurs({ joueurs }: Props) {
     const totalCases = 9;
@@ -55,6 +58,14 @@ export default function GrilleJoueurs({ joueurs }: Props) {
     const handleSelectJoueur = (joueur: Joueur) => {
         if (!selectedCase) return;
 
+        const alreadyAssigned = Object.values(assignations).some(
+            (j) => j.id_utilisateur === joueur.id_utilisateur
+        );
+        if (alreadyAssigned) {
+            alert(`${joueur.prenom} est déjà assigné à un autre poste !`);
+            return;
+        }
+
         setAssignations((prev) => ({
             ...prev,
             [selectedCase]: joueur,
@@ -63,6 +74,7 @@ export default function GrilleJoueurs({ joueurs }: Props) {
         setIsModalOpen(false);
         setSelectedCase(null);
     };
+
 
     return (
         <>
