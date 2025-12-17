@@ -1,18 +1,19 @@
-
 generator client {
   provider = "prisma-client"
-  output   = "../app/generated/prisma"
+  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
 }
 
-model Equipe {
-  id_equipe     Int          @id @default(autoincrement())
-  nom_equipe    String
+
+model Categorie {
+  id_categorie Int           @id @default(autoincrement())
+  nom          String
   date_creation DateTime     @default(now())
-  utilisateurs  Utilisateur[]
+  utilisateurs Utilisateur[]
+  matchs       Match[]
 }
 
 model Utilisateur {
@@ -23,6 +24,27 @@ model Utilisateur {
   mail           String   @unique
   mdp_hash       String
   date_creation  DateTime @default(now())
-  id_equipe      Int?
-  equipe         Equipe?  @relation(fields: [id_equipe], references: [id_equipe])
+  id_categorie   Int
+  categorie      Categorie @relation(fields: [id_categorie], references: [id_categorie])
+}
+
+model Match {
+  id_match      Int      @id @default(autoincrement())
+  date_match    DateTime
+  lieu          String?
+  date_creation DateTime @default(now())
+  id_categorie  Int
+  categorie     Categorie @relation(fields: [id_categorie], references: [id_categorie])
+  lignes        Ligne[]
+  score_domicile Int
+  score_exterieur Int
+}
+
+model Ligne {
+  id_ligne      Int      @id @default(autoincrement())
+  nom           String?
+  date_creation DateTime @default(now())
+  id_match      Int
+  match         Match    @relation(fields: [id_match], references: [id_match])
+  positions     Json
 }
