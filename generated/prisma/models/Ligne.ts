@@ -614,10 +614,10 @@ export interface LigneDelegate<ExtArgs extends runtime.Types.Extensions.Internal
    * @param {LigneFindManyArgs} args - Arguments to filter and select certain fields only.
    * @example
    * // Get all Lignes
-   * const lignes = await prisma.ligne.findMany()
+   * const lignes.ts = await prisma.ligne.findMany()
    * 
    * // Get first 10 Lignes
-   * const lignes = await prisma.ligne.findMany({ take: 10 })
+   * const lignes.ts = await prisma.ligne.findMany({ take: 10 })
    * 
    * // Only select the `id_ligne`
    * const ligneWithId_ligneOnly = await prisma.ligne.findMany({ select: { id_ligne: true } })

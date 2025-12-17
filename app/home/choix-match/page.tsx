@@ -36,7 +36,7 @@ export default function MatchesList() {
     }, []);
 
     const handleClick = (matchId: number) => {
-        // Redirection vers la page de choix des lignes
+        // Redirection vers la page de choix des lignes.ts
         router.push(`/home/choix-match/lignes?matchId=${matchId}`);
     };
 

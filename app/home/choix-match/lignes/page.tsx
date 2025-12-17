@@ -3,12 +3,10 @@
 import React, { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
+import GrilleJoueurs from "@/components/GrilleJoueur";
+import {Ligne} from "@/app/types/lignes";
 
-interface Ligne {
-    id_ligne: number;
-    nom?: string;
-    positions: number;
-}
+
 
 export default function Lignes() {
     const router = useRouter();
@@ -27,7 +25,7 @@ export default function Lignes() {
 
     };
 
-    // Fetch des lignes existantes
+    // Fetch des lignes.ts existantes
     useEffect(() => {
         if (!matchId) return;
 
@@ -51,7 +49,7 @@ export default function Lignes() {
                 Retour
             </button>
 
-            {/* Container Créateur de lignes */}
+            {/* Container Créateur de lignes.ts */}
             <div className="w-full max-w-5xl h-[85vh] sm:h-[85vh] md:h-[80vh] border border-black/15 rounded-xl p-4 sm:p-6 lg:p-8 bg-white shadow-md flex flex-col mt-2 overflow-hidden">
                 <h1 className="text-l sm:text-xl font-semibold text-start dark:text-gray-100 mb-2">
                     Créateur de lignes
@@ -80,14 +78,7 @@ export default function Lignes() {
                             className="block w-full h-auto object-contain bg-[#89FBFF]/30 rounded-[62px]"
                             priority
                         />
-                        <div className="absolute inset-0 grid grid-cols-2 grid-rows-3 pointer-events-none mt-18 mb-18 ml-12 mr-12 gap-9">
-                            {Array.from({ length: 6 }).map((_, index) => (
-                                <div
-                                    key={index}
-                                    className="border border-white rounded-[10px] bg-[#1E1E1E]/90 shadow-[0_0_4px_2px_rgba(30,30,30,0.66)]"
-                                ></div>
-                            ))}
-                        </div>
+                        <GrilleJoueurs joueurs={joueurs} />
                     </div>
                 </div>
 

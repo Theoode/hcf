@@ -1572,7 +1572,7 @@ export type MatchDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
 }
 
 /**
- * Match.lignes
+ * Match.lignes.ts
  */
 export type Match$lignesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
