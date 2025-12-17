@@ -28,7 +28,7 @@ async function main() {
     for (let i = 0; i < 3; i++) {
         await prisma.match.create({
             data: {
-                date_match: new Date(Date.now() + i * 86400000), // match chaque jour
+                date_match: new Date(Date.now() + i * 86400000), // choix-match chaque jour
                 lieu: `Stade ${i + 1}`,
                 score_domicile: Math.floor(Math.random() * 5),
                 score_exterieur: Math.floor(Math.random() * 5),

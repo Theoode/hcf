@@ -20,7 +20,7 @@ const config: runtime.GetPrismaClientConfig = {
   "clientVersion": "7.1.0",
   "engineVersion": "ab635e6b9d606fa5c8fb8b1a7f909c3c3c1c98ba",
   "activeProvider": "postgresql",
-  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel Categorie {\n  id_categorie  Int           @id @default(autoincrement())\n  nom           String\n  date_creation DateTime      @default(now())\n  utilisateurs  Utilisateur[]\n  matchs        Match[]\n}\n\nmodel Utilisateur {\n  id_utilisateur Int       @id @default(autoincrement())\n  prenom         String\n  nom            String\n  numero         String\n  mail           String    @unique\n  mdp_hash       String\n  date_creation  DateTime  @default(now())\n  id_categorie   Int\n  categorie      Categorie @relation(fields: [id_categorie], references: [id_categorie])\n}\n\nmodel Match {\n  id_match        Int       @id @default(autoincrement())\n  date_match      DateTime\n  lieu            String?\n  date_creation   DateTime  @default(now())\n  id_categorie    Int\n  categorie       Categorie @relation(fields: [id_categorie], references: [id_categorie])\n  lignes          Ligne[]\n  score_domicile  Int\n  score_exterieur Int\n}\n\nmodel Ligne {\n  id_ligne      Int      @id @default(autoincrement())\n  nom           String?\n  date_creation DateTime @default(now())\n  id_match      Int\n  match         Match    @relation(fields: [id_match], references: [id_match])\n  positions     Json\n}\n",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel Categorie {\n  id_categorie  Int           @id @default(autoincrement())\n  nom           String\n  date_creation DateTime      @default(now())\n  utilisateurs  Utilisateur[]\n  matchs        Match[]\n}\n\nmodel Utilisateur {\n  id_utilisateur Int       @id @default(autoincrement())\n  prenom         String\n  nom            String\n  numero         String\n  mail           String    @unique\n  mdp_hash       String\n  date_creation  DateTime  @default(now())\n  id_categorie   Int\n  categorie      Categorie @relation(fields: [id_categorie], references: [id_categorie])\n}\n\nmodel Match {\n  id_match        Int       @id @default(autoincrement())\n  date_match      DateTime\n  lieu            String?\n  date_creation   DateTime  @default(now())\n  id_categorie    Int\n  categorie       Categorie @relation(fields: [id_categorie], references: [id_categorie])\n  lignes          Ligne[]\n  score_domicile  Int\n  score_exterieur Int\n}\n\nmodel Ligne {\n  id_ligne      Int      @id @default(autoincrement())\n  nom           String?\n  date_creation DateTime @default(now())\n  id_match      Int\n  choix-match         Match    @relation(fields: [id_match], references: [id_match])\n  positions     Json\n}\n",
   "runtimeDataModel": {
     "models": {},
     "enums": {},
@@ -195,11 +195,11 @@ export interface PrismaClient<
   get utilisateur(): Prisma.UtilisateurDelegate<ExtArgs, { omit: OmitOpts }>;
 
   /**
-   * `prisma.match`: Exposes CRUD operations for the **Match** model.
+   * `prisma.choix-match`: Exposes CRUD operations for the **Match** model.
     * Example usage:
     * ```ts
     * // Fetch zero or more Matches
-    * const matches = await prisma.match.findMany()
+    * const matches = await prisma.choix-match.findMany()
     * ```
     */
   get match(): Prisma.MatchDelegate<ExtArgs, { omit: OmitOpts }>;

@@ -762,7 +762,7 @@ export interface MatchDelegate<ExtArgs extends runtime.Types.Extensions.Internal
    * @param {MatchFindUniqueArgs} args - Arguments to find a Match
    * @example
    * // Get one Match
-   * const match = await prisma.match.findUnique({
+   * const choix-match = await prisma.choix-match.findUnique({
    *   where: {
    *     // ... provide filter here
    *   }
@@ -776,7 +776,7 @@ export interface MatchDelegate<ExtArgs extends runtime.Types.Extensions.Internal
    * @param {MatchFindUniqueOrThrowArgs} args - Arguments to find a Match
    * @example
    * // Get one Match
-   * const match = await prisma.match.findUniqueOrThrow({
+   * const choix-match = await prisma.choix-match.findUniqueOrThrow({
    *   where: {
    *     // ... provide filter here
    *   }
@@ -791,7 +791,7 @@ export interface MatchDelegate<ExtArgs extends runtime.Types.Extensions.Internal
    * @param {MatchFindFirstArgs} args - Arguments to find a Match
    * @example
    * // Get one Match
-   * const match = await prisma.match.findFirst({
+   * const choix-match = await prisma.choix-match.findFirst({
    *   where: {
    *     // ... provide filter here
    *   }
@@ -807,7 +807,7 @@ export interface MatchDelegate<ExtArgs extends runtime.Types.Extensions.Internal
    * @param {MatchFindFirstOrThrowArgs} args - Arguments to find a Match
    * @example
    * // Get one Match
-   * const match = await prisma.match.findFirstOrThrow({
+   * const choix-match = await prisma.choix-match.findFirstOrThrow({
    *   where: {
    *     // ... provide filter here
    *   }
@@ -822,13 +822,13 @@ export interface MatchDelegate<ExtArgs extends runtime.Types.Extensions.Internal
    * @param {MatchFindManyArgs} args - Arguments to filter and select certain fields only.
    * @example
    * // Get all Matches
-   * const matches = await prisma.match.findMany()
+   * const matches = await prisma.choix-match.findMany()
    * 
    * // Get first 10 Matches
-   * const matches = await prisma.match.findMany({ take: 10 })
+   * const matches = await prisma.choix-match.findMany({ take: 10 })
    * 
    * // Only select the `id_match`
-   * const matchWithId_matchOnly = await prisma.match.findMany({ select: { id_match: true } })
+   * const matchWithId_matchOnly = await prisma.choix-match.findMany({ select: { id_match: true } })
    * 
    */
   findMany<T extends MatchFindManyArgs>(args?: Prisma.SelectSubset<T, MatchFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -838,7 +838,7 @@ export interface MatchDelegate<ExtArgs extends runtime.Types.Extensions.Internal
    * @param {MatchCreateArgs} args - Arguments to create a Match.
    * @example
    * // Create one Match
-   * const Match = await prisma.match.create({
+   * const Match = await prisma.choix-match.create({
    *   data: {
    *     // ... data to create a Match
    *   }
@@ -852,7 +852,7 @@ export interface MatchDelegate<ExtArgs extends runtime.Types.Extensions.Internal
    * @param {MatchCreateManyArgs} args - Arguments to create many Matches.
    * @example
    * // Create many Matches
-   * const match = await prisma.match.createMany({
+   * const choix-match = await prisma.choix-match.createMany({
    *   data: [
    *     // ... provide data here
    *   ]
@@ -866,14 +866,14 @@ export interface MatchDelegate<ExtArgs extends runtime.Types.Extensions.Internal
    * @param {MatchCreateManyAndReturnArgs} args - Arguments to create many Matches.
    * @example
    * // Create many Matches
-   * const match = await prisma.match.createManyAndReturn({
+   * const choix-match = await prisma.choix-match.createManyAndReturn({
    *   data: [
    *     // ... provide data here
    *   ]
    * })
    * 
    * // Create many Matches and only return the `id_match`
-   * const matchWithId_matchOnly = await prisma.match.createManyAndReturn({
+   * const matchWithId_matchOnly = await prisma.choix-match.createManyAndReturn({
    *   select: { id_match: true },
    *   data: [
    *     // ... provide data here
@@ -890,7 +890,7 @@ export interface MatchDelegate<ExtArgs extends runtime.Types.Extensions.Internal
    * @param {MatchDeleteArgs} args - Arguments to delete one Match.
    * @example
    * // Delete one Match
-   * const Match = await prisma.match.delete({
+   * const Match = await prisma.choix-match.delete({
    *   where: {
    *     // ... filter to delete one Match
    *   }
@@ -904,7 +904,7 @@ export interface MatchDelegate<ExtArgs extends runtime.Types.Extensions.Internal
    * @param {MatchUpdateArgs} args - Arguments to update one Match.
    * @example
    * // Update one Match
-   * const match = await prisma.match.update({
+   * const choix-match = await prisma.choix-match.update({
    *   where: {
    *     // ... provide filter here
    *   },
@@ -921,7 +921,7 @@ export interface MatchDelegate<ExtArgs extends runtime.Types.Extensions.Internal
    * @param {MatchDeleteManyArgs} args - Arguments to filter Matches to delete.
    * @example
    * // Delete a few Matches
-   * const { count } = await prisma.match.deleteMany({
+   * const { count } = await prisma.choix-match.deleteMany({
    *   where: {
    *     // ... provide filter here
    *   }
@@ -937,7 +937,7 @@ export interface MatchDelegate<ExtArgs extends runtime.Types.Extensions.Internal
    * @param {MatchUpdateManyArgs} args - Arguments to update one or more rows.
    * @example
    * // Update many Matches
-   * const match = await prisma.match.updateMany({
+   * const choix-match = await prisma.choix-match.updateMany({
    *   where: {
    *     // ... provide filter here
    *   },
@@ -954,7 +954,7 @@ export interface MatchDelegate<ExtArgs extends runtime.Types.Extensions.Internal
    * @param {MatchUpdateManyAndReturnArgs} args - Arguments to update many Matches.
    * @example
    * // Update many Matches
-   * const match = await prisma.match.updateManyAndReturn({
+   * const choix-match = await prisma.choix-match.updateManyAndReturn({
    *   where: {
    *     // ... provide filter here
    *   },
@@ -964,7 +964,7 @@ export interface MatchDelegate<ExtArgs extends runtime.Types.Extensions.Internal
    * })
    * 
    * // Update zero or more Matches and only return the `id_match`
-   * const matchWithId_matchOnly = await prisma.match.updateManyAndReturn({
+   * const matchWithId_matchOnly = await prisma.choix-match.updateManyAndReturn({
    *   select: { id_match: true },
    *   where: {
    *     // ... provide filter here
@@ -984,7 +984,7 @@ export interface MatchDelegate<ExtArgs extends runtime.Types.Extensions.Internal
    * @param {MatchUpsertArgs} args - Arguments to update or create a Match.
    * @example
    * // Update or create a Match
-   * const match = await prisma.match.upsert({
+   * const choix-match = await prisma.choix-match.upsert({
    *   create: {
    *     // ... data to create a Match
    *   },
@@ -1006,7 +1006,7 @@ export interface MatchDelegate<ExtArgs extends runtime.Types.Extensions.Internal
    * @param {MatchCountArgs} args - Arguments to filter Matches to count.
    * @example
    * // Count the number of Matches
-   * const count = await prisma.match.count({
+   * const count = await prisma.choix-match.count({
    *   where: {
    *     // ... the filter for the Matches we want to count
    *   }
