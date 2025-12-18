@@ -20,27 +20,23 @@ export default function Lignes() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const matchIdParam = searchParams.get("matchId");
-
     const getVisibleCases = (joueurs: number): number[] => {
         if (joueurs === 3) return [5, 7, 9];
         if (joueurs === 4) return [4, 5, 6, 8];
         return [1, 3, 5, 7, 9];
     };
-
     const getRoleByCase = (idCase: number, joueurs: number): "A" | "D" | "C" => {
         if ([1, 3, 6].includes(idCase)) return "A";
         if ([4, 7, 8, 9].includes(idCase)) return "D";
         if (idCase === 5) return joueurs === 5 ? "C" : "A";
         return "A";
     };
-
     const [matchData, setMatchData] = useState<MatchData | null>(null);
     const [assignations, setAssignations] = useState<Record<number, Joueur>>({});
     const [joueurs, setJoueurs] = useState(5);
     const [lignesEnregistrees, setLignesEnregistrees] = useState<Ligne[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-
     const matchId = matchIdParam ? parseInt(matchIdParam, 10) : null;
 
     useEffect(() => {
@@ -108,7 +104,7 @@ export default function Lignes() {
             if (data.success) {
                 alert("Ligne sauvegardée !");
                 setAssignations({});
-                setLignesEnregistrees((prev) => [...prev, data.ligne]); // si API retourne la ligne
+                setLignesEnregistrees((prev) => [...prev, data.ligne]);
             } else {
                 alert(data.message);
             }
@@ -116,8 +112,50 @@ export default function Lignes() {
             alert("Erreur réseau");
         }
     };
+    const handleDeleteLigne = async (id_ligne: number) => {
+        if (!confirm("Supprimer cette ligne ?")) return;
 
+        try {
+            const res = await fetch(`/api/lignes/${id_ligne}`, {
+                method: "DELETE",
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                setLignesEnregistrees((prev) =>
+                    prev.filter((l) => l.id_ligne !== id_ligne)
+                );
+            } else {
+                alert(data.error || "Erreur suppression");
+            }
+        } catch {
+            alert("Erreur réseau");
+        }
+    };
+    const handleLoadLigne = (ligne: Ligne) => {
+        if (!ligne?.positions?.joueurs) return;
+
+        const loadedAssignations: Record<number, Joueur> = {};
+
+        ligne.positions.joueurs.forEach((pos) => {
+            if (pos.case && pos.joueur) {
+                loadedAssignations[pos.case] = pos.joueur;
+            }
+        });
+
+        setJoueurs(ligne.positions.format);
+        setAssignations(loadedAssignations);
+    };
     const handleBack = () => router.back();
+    const handleClearGrille = () => {
+        setAssignations({});
+    };
+    const handleChangeFormat = (value: number) => {
+        setJoueurs(value);
+        handleClearGrille()
+    };
+
 
     if (!matchId) return null;
     if (loading) return <p>Chargement du match...</p>;
@@ -126,10 +164,7 @@ export default function Lignes() {
 
     return (
         <div className="min-h-screen bg-[#F7F7F7] p-4 sm:p-6 lg:p-8">
-            <button
-                onClick={handleBack}
-                className="mb-4 px-3 py-1 bg-black text-white rounded-md hover:bg-gray-800 transition-colors sm:text-xl"
-            >
+            <button onClick={handleBack} className="mb-4 px-3 py-1 bg-black text-white rounded-md hover:bg-gray-800 transition-colors sm:text-xl">
                 Retour
             </button>
 
@@ -142,7 +177,7 @@ export default function Lignes() {
                 <div className="w-full flex flex-col sm:flex-row justify-between gap-2 mb-4">
                     <select
                         value={joueurs}
-                        onChange={(e) => setJoueurs(Number(e.target.value))}
+                        onChange={(e) => handleChangeFormat(Number(e.target.value))}
                         className="p-2 border text-l border-black/20 bg-white rounded-3xl w-full sm:w-1/3"
                     >
                         <option value={5}>Jeu à 5</option>
@@ -169,55 +204,94 @@ export default function Lignes() {
                     </div>
                 </div>
 
-                <button
-                    onClick={handleSave}
-                    className="px-4 py-2 w-full sm:w-auto text-white bg-green-400 font-medium rounded-3xl sm:text-xl transition-colors"
-                >
-                    Enregistrer la ligne
-                </button>
+
+                <div className="flex flex-row justify-between gap-2">
+                    <button
+                        onClick={handleSave}
+                        className="px-3 py-1.5 text-white bg-green-500 text-sm font-medium rounded-xl hover:bg-green-600 transition"
+                    >
+                        Enregistrer
+                    </button>
+
+                    <button
+                        onClick={handleClearGrille}
+                        className="px-3 py-1.5 text-white bg-gray-400 text-sm font-medium rounded-xl hover:bg-gray-500 transition"
+                    >
+                        Nettoyer
+                    </button>
+                </div>
+
+
             </div>
 
-            <div className="w-full max-w-5xl h-[20vh] sm:h-[85vh] md:h-[80vh] border border-black/15 rounded-xl p-4 sm:p-6 lg:p-8 bg-white shadow-md flex flex-col overflow-hidden mt-8">
+            <div className="w-full max-w-5xl border border-black/15 rounded-xl p-4 sm:p-6 lg:p-8 bg-white shadow-md flex flex-col mt-8">
                 <div className="flex flex-col mb-4">
-                    <h1 className="text-l sm:text-xl font-semibold">Lignes enregistrées</h1>
+                    <h1 className="text-l sm:text-xl font-semibold">
+                        Lignes enregistrées
+                    </h1>
                     <h3 className="text-l sm:text-xl font-semibold opacity-50">
                         Lignes enregistrées pour ce match
                     </h3>
                 </div>
 
-                <ul className="flex flex-col gap-2 overflow-y-auto max-h-[60vh]">
-                    {lignesEnregistrees.map((ligne) => {
-                        if (!ligne || !ligne.positions) return null;
+                {lignesEnregistrees.length === 0 ? (
+                    <p className="text-gray-500">
+                        Aucune ligne enregistrée pour le moment.
+                    </p>
+                ) : (
+                    <ul className="flex flex-col gap-2">
+                        {lignesEnregistrees.map((ligne) => {
+                            if (!ligne?.positions) return null;
 
-                        const nom = ligne.nom || `Ligne ${ligne.id_ligne}`;
-                        const format = ligne.positions.format || "?";
-                        const joueurs = ligne.positions.joueurs || [];
+                            const nom = ligne.nom || `Ligne ${ligne.id_ligne}`;
+                            const format = ligne.positions.format ?? "?";
+                            const joueurs = ligne.positions.joueurs ?? [];
 
-                        return (
-                            <li
-                                key={ligne.id_ligne}
-                                className="p-3 border rounded-md bg-gray-100 text-sm"
-                            >
-                                <div className="font-semibold mb-1">
-                                    {nom} – Jeu à {format}
-                                </div>
+                            return (
+                                <li
+                                    key={ligne.id_ligne}
+                                    className="p-3 border rounded-md bg-gray-100 text-sm flex flex-col gap-2"
+                                >
+                                    <div className="flex justify-between items-center">
+                                        <div className="font-semibold">
+                                            {nom} – Jeu à {format}
+                                        </div>
 
-                                <div className="flex flex-wrap gap-2">
-                                    {joueurs.map((pos) => (
-                                        <span
-                                            key={pos.case}
-                                            className="px-2 py-1 bg-white border rounded-full text-xs"
-                                        >
-                                    {pos.role} – {pos.joueur?.prenom || "?"}
-                                    </span>
-                                    ))}
-                                </div>
-                            </li>
-                        );
-                    })}
-                </ul>
+                                        <div className="flex gap-2">
+                                            <button
+                                                onClick={() => handleLoadLigne(ligne)}
+                                                className="px-2 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600"
+                                            >
+                                                Charger
+                                            </button>
 
+                                            <button
+                                                onClick={() => handleDeleteLigne(ligne.id_ligne)}
+                                                className="px-2 py-1 text-xs bg-red-500 text-white rounded hover:bg-red-600"
+                                            >
+                                                Supprimer
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex flex-wrap gap-2">
+                                        {joueurs.map((pos) => (
+                                            <span
+                                                key={pos.case}
+                                                className="px-2 py-1 bg-white border rounded-full text-xs"
+                                            >
+                {pos.role} – {pos.joueur?.prenom || "?"}
+            </span>
+                                        ))}
+                                    </div>
+                                </li>
+
+                            );
+                        })}
+                    </ul>
+                )}
             </div>
+
         </div>
     );
 }

@@ -84,14 +84,16 @@ export default function GrilleJoueurs({ joueurs, assignations, setAssignations }
                             key={idCase}
                             onClick={() => handleCaseClick(idCase)}
                             className={`
-                                border rounded-[10px]
+                                border-white border-2 rounded-[10px]
                                 bg-[#1E1E1E]/90
+                                shadow-[0_0_4px_2px_rgba(0,0,0,0.6)]
                                 flex items-center justify-center
                                 transition-opacity
                                 ${isVisible ? "opacity-100 cursor-pointer" : "opacity-0 pointer-events-none"}
                             `}
                         >
-                            <h1 className="text-white font-bold text-xl">
+
+                        <h1 className="text-white font-bold text-xl">
                                 {joueur ? joueur.nom : getLabel(idCase)}
                             </h1>
                         </div>
