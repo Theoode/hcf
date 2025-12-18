@@ -16,6 +16,7 @@ interface MatchData {
     categorie: { nom: string };
 }
 
+
 export default function Lignes() {
     const router = useRouter();
     const searchParams = useSearchParams();
