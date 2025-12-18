@@ -13,12 +13,11 @@ export async function POST(req: Request) {
             );
         }
 
-        // Crée une seule ligne avec toutes les positions
         await prisma.ligne.create({
             data: {
-                nom: `Ligne ${new Date().toLocaleString()}`, // tu peux personnaliser
+                nom: `Ligne ${new Date().toLocaleString()}`,
                 id_match: Number(matchId),
-                positions: positions, // stocke tout l'objet JSON
+                positions: positions, // champ JSONB
             },
         });
 
