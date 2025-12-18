@@ -4,17 +4,22 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        const { matchId, assignations } = body;
+        const { matchId, positions } = body;
 
-        const lignesData = Object.entries(assignations).map(([id_case, joueur]: [string, any]) => ({
-            nom: joueur.prenom,
-            id_match: Number(matchId),
-            positions: { poste: Number(id_case), joueur: joueur.id_utilisateur },
-        }));
+        if (!matchId || !positions || !positions.joueurs) {
+            return NextResponse.json(
+                { success: false, error: "Données manquantes" },
+                { status: 400 }
+            );
+        }
 
-        // Crée les lignes en base
-        await prisma.ligne.createMany({
-            data: lignesData,
+        // Crée une seule ligne avec toutes les positions
+        await prisma.ligne.create({
+            data: {
+                nom: `Ligne ${new Date().toLocaleString()}`, // tu peux personnaliser
+                id_match: Number(matchId),
+                positions: positions, // stocke tout l'objet JSON
+            },
         });
 
         return NextResponse.json({ success: true });

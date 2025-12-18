@@ -21,6 +21,19 @@ export default function Lignes() {
     const searchParams = useSearchParams();
     const matchIdParam = searchParams.get("matchId");
 
+    const getVisibleCases = (joueurs: number): number[] => {
+        if (joueurs === 3) return [5, 7, 9];
+        if (joueurs === 4) return [4, 5, 6, 8];
+        return [1, 3, 5, 7, 9];
+    };
+
+    const getRoleByCase = (idCase: number, joueurs: number): "A" | "D" | "C" => {
+        if ([1, 3, 6].includes(idCase)) return "A";
+        if ([4, 7, 8, 9].includes(idCase)) return "D";
+        if (idCase === 5) return joueurs === 5 ? "C" : "A";
+        return "A";
+    };
+
     const [matchData, setMatchData] = useState<MatchData | null>(null);
     const [assignations, setAssignations] = useState<Record<number, Joueur>>({});
     const [joueurs, setJoueurs] = useState(5);
@@ -28,17 +41,12 @@ export default function Lignes() {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
-    // Vérification et parsing de l'ID
     const matchId = matchIdParam ? parseInt(matchIdParam, 10) : null;
 
-    // Si matchId absent, on redirige vers la liste des matchs
     useEffect(() => {
-        if (!matchId) {
-            router.replace("/home/choix-match"); // Redirection vers la liste
-        }
+        if (!matchId) router.replace("/home/choix-match");
     }, [matchId, router]);
 
-    // Fetch du match
     useEffect(() => {
         if (!matchId) return;
 
@@ -49,7 +57,13 @@ export default function Lignes() {
                 const data = await res.json();
                 if (data.success) {
                     setMatchData(data.data);
-                    setLignesEnregistrees(data.data.lignes || []);
+                    // Normalisation : ne garder que les lignes valides
+                    const lignesNorm = (data.data.lignes || []).filter(
+                        (ligne: Ligne) =>
+                            ligne.positions &&
+                            Array.isArray(ligne.positions.joueurs)
+                    );
+                    setLignesEnregistrees(lignesNorm);
                     setError(null);
                 } else {
                     setError(data.message);
@@ -67,42 +81,45 @@ export default function Lignes() {
 
     const handleSave = async () => {
         if (!matchId) return;
-        if (Object.keys(assignations).length === 0) {
-            alert("Aucun joueur assigné !");
+
+        const visibleCases = getVisibleCases(joueurs);
+        const missing = visibleCases.filter((id) => !assignations[id]);
+        if (missing.length > 0) {
+            alert("Tous les postes visibles doivent être remplis");
             return;
         }
+
+        const positions = {
+            format: joueurs as 3 | 4 | 5,
+            joueurs: visibleCases.map((idCase) => ({
+                case: idCase,
+                role: getRoleByCase(idCase, joueurs),
+                joueur: assignations[idCase],
+            })),
+        };
 
         try {
             const res = await fetch("/api/lignes", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ matchId, assignations }),
+                body: JSON.stringify({ matchId, positions }),
             });
             const data = await res.json();
             if (data.success) {
                 alert("Ligne sauvegardée !");
-                // Ajouter localement la ligne pour un rendu instantané
-                setLignesEnregistrees(prev => [
-                    ...prev,
-                    {
-                        id_ligne: Date.now(),
-                        nom: undefined,
-                        positions: assignations,
-                        date_creation: new Date(),
-                        id_match: matchId
-                    }
-                ]);
+                setAssignations({});
+                setLignesEnregistrees((prev) => [...prev, data.ligne]); // si API retourne la ligne
             } else {
-                alert("Erreur lors de la sauvegarde : " + data.message);
+                alert(data.message);
             }
         } catch {
-            alert("Erreur réseau lors de la sauvegarde.");
+            alert("Erreur réseau");
         }
     };
 
     const handleBack = () => router.back();
 
-    if (!matchId) return null; // redirection en cours
+    if (!matchId) return null;
     if (loading) return <p>Chargement du match...</p>;
     if (error) return <p className="text-red-500">{error}</p>;
     if (!matchData) return <p>Match introuvable.</p>;
@@ -168,21 +185,38 @@ export default function Lignes() {
                     </h3>
                 </div>
 
-                {lignesEnregistrees.length === 0 ? (
-                    <p className="text-gray-500">Aucune ligne enregistrée pour le moment.</p>
-                ) : (
-                    <ul className="flex flex-col gap-2 overflow-y-auto max-h-[60vh]">
-                        {lignesEnregistrees.map((ligne) => (
+                <ul className="flex flex-col gap-2 overflow-y-auto max-h-[60vh]">
+                    {lignesEnregistrees.map((ligne) => {
+                        if (!ligne || !ligne.positions) return null;
+
+                        const nom = ligne.nom || `Ligne ${ligne.id_ligne}`;
+                        const format = ligne.positions.format || "?";
+                        const joueurs = ligne.positions.joueurs || [];
+
+                        return (
                             <li
                                 key={ligne.id_ligne}
-                                className="p-2 border rounded-md bg-gray-100 text-sm"
+                                className="p-3 border rounded-md bg-gray-100 text-sm"
                             >
-                                {ligne.nom || `Ligne ${ligne.id_ligne}`} -{" "}
-                                {JSON.stringify(ligne.positions)}
+                                <div className="font-semibold mb-1">
+                                    {nom} – Jeu à {format}
+                                </div>
+
+                                <div className="flex flex-wrap gap-2">
+                                    {joueurs.map((pos) => (
+                                        <span
+                                            key={pos.case}
+                                            className="px-2 py-1 bg-white border rounded-full text-xs"
+                                        >
+                                    {pos.role} – {pos.joueur?.prenom || "?"}
+                                    </span>
+                                    ))}
+                                </div>
                             </li>
-                        ))}
-                    </ul>
-                )}
+                        );
+                    })}
+                </ul>
+
             </div>
         </div>
     );
