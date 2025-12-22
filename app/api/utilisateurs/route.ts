@@ -1,22 +1,29 @@
-import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { supabase } from '@/lib/supabase'
+import { NextResponse } from 'next/server'
 
 export async function GET() {
     try {
-        const utilisateurs = await prisma.utilisateur.findMany({
-            select: {
-                id_utilisateur: true,
-                prenom: true,
-                nom: true,
-                numero: true,
-            },
-        });
+        const { data: utilisateurs, error } = await supabase
+            .from('Utilisateur')
+            .select('id_utilisateur, prenom, nom, numero')
 
-        return NextResponse.json({ success: true, data: utilisateurs });
+        if (error) {
+            console.error(error)
+            return NextResponse.json(
+                { success: false, error: error.message },
+                { status: 500 }
+            )
+        }
+
+        return NextResponse.json({
+            success: true,
+            data: utilisateurs ?? [],
+        })
     } catch (error) {
+        console.error(error)
         return NextResponse.json(
-            { success: false, error: "Erreur serveur" },
+            { success: false, error: 'Erreur serveur' },
             { status: 500 }
-        );
+        )
     }
 }

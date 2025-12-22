@@ -31,7 +31,7 @@ export default function MatchesList() {
                     onClick={() => handleClick(m.id_match)}
                 >
                     <p>
-                        <strong>{m.categorie.nom}</strong> -{" "}
+                        <strong>{m.Categorie.nom}</strong> -{" "}
                         {new Date(m.date_match).toLocaleString()}
                     </p>
                     <p>

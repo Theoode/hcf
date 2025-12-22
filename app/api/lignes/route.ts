@@ -1,32 +1,40 @@
-import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { supabase } from '@/lib/supabase'
+import { NextResponse } from 'next/server'
 
 export async function POST(req: Request) {
     try {
-        const body = await req.json();
-        const { matchId, positions } = body;
+        const body = await req.json()
+        const { matchId, positions } = body
 
         if (!matchId || !positions || !positions.joueurs) {
             return NextResponse.json(
-                { success: false, error: "Données manquantes" },
+                { success: false, error: 'Données manquantes' },
                 { status: 400 }
-            );
+            )
         }
 
-        await prisma.ligne.create({
-            data: {
+        const { error } = await supabase
+            .from('ligne')
+            .insert({
                 nom: `Ligne ${new Date().toLocaleString()}`,
                 id_match: Number(matchId),
-                positions: positions, // champ JSONB
-            },
-        });
+                positions: positions
+            })
 
-        return NextResponse.json({ success: true });
+        if (error) {
+            console.error(error)
+            return NextResponse.json(
+                { success: false, error: error.message },
+                { status: 500 }
+            )
+        }
+
+        return NextResponse.json({ success: true })
     } catch (error) {
-        console.error(error);
+        console.error(error)
         return NextResponse.json(
-            { success: false, error: "Erreur serveur" },
+            { success: false, error: 'Erreur serveur' },
             { status: 500 }
-        );
+        )
     }
 }

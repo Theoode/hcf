@@ -20,6 +20,8 @@ export default function LoginPage() {
                 body: JSON.stringify({ email, password }),
             });
 
+
+
             const data = await res.json();
 
             if (!res.ok) {
@@ -27,7 +29,9 @@ export default function LoginPage() {
                 return;
             }
 
+            // Connexion réussie
             localStorage.setItem("isLoggedIn", "true");
+            localStorage.setItem("userId", data.userId);
             router.push("/home");
         } catch (err) {
             console.error(err);
