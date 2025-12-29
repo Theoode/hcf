@@ -136,6 +136,7 @@ export default function Lignes() {
         }
     };
 
+
     const handleLoadLigne = (ligne: Ligne) => {
         if (!ligne?.positions?.joueurs) return;
         const loaded: Record<number, Joueur> = {};

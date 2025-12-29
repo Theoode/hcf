@@ -1,4 +1,4 @@
-// app/api/match/[id]/route.ts
+// app/api/match/[id]/route.ts.ts
 import { supabase } from '@/lib/supabase';
 import { NextResponse } from 'next/server';
 
