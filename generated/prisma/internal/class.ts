@@ -17,8 +17,8 @@ import type * as Prisma from "./prismaNamespace"
 
 const config: runtime.GetPrismaClientConfig = {
   "previewFeatures": [],
-  "clientVersion": "7.1.0",
-  "engineVersion": "ab635e6b9d606fa5c8fb8b1a7f909c3c3c1c98ba",
+  "clientVersion": "7.2.0",
+  "engineVersion": "0c8ef2ce45c83248ab3df073180d5eda9e8be7a3",
   "activeProvider": "postgresql",
   "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel Categorie {\n  id_categorie  Int           @id @default(autoincrement())\n  nom           String\n  date_creation DateTime      @default(now())\n  utilisateurs  Utilisateur[]\n  matchs        Match[]\n}\n\nmodel Utilisateur {\n  id_utilisateur Int       @id @default(autoincrement())\n  prenom         String\n  nom            String\n  numero         String\n  mail           String    @unique\n  mdp_hash       String\n  date_creation  DateTime  @default(now())\n  id_categorie   Int\n  categorie      Categorie @relation(fields: [id_categorie], references: [id_categorie])\n}\n\nmodel Match {\n  id_match        Int       @id @default(autoincrement())\n  date_match      DateTime\n  lieu            String?\n  date_creation   DateTime  @default(now())\n  id_categorie    Int\n  categorie       Categorie @relation(fields: [id_categorie], references: [id_categorie])\n  lignes          Ligne[]\n  score_domicile  Int\n  score_exterieur Int\n}\n\nmodel Ligne {\n  id_ligne      Int      @id @default(autoincrement())\n  nom           String?\n  date_creation DateTime @default(now())\n  id_match      Int\n  match         Match    @relation(fields: [id_match], references: [id_match])\n  positions     Json\n}\n",
   "runtimeDataModel": {
