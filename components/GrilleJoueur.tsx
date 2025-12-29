@@ -13,10 +13,9 @@ interface Props {
 export default function GrilleJoueurs({ joueurs, assignations, setAssignations }: Props) {
     const totalCases = 9;
 
-    const visibleCases =
-        joueurs === 3 ? [5, 7, 9] :
-            joueurs === 4 ? [4, 5, 6, 8] :
-                [1, 3, 5, 7, 9];
+    const visibleCases = joueurs === 3 ? [5, 7, 9] :
+        joueurs === 4 ? [4, 5, 6, 8] :
+            [1, 3, 5, 7, 9];
 
     const [users, setUsers] = useState<Joueur[]>([]);
     const [selectedCase, setSelectedCase] = useState<number | null>(null);
@@ -24,18 +23,23 @@ export default function GrilleJoueurs({ joueurs, assignations, setAssignations }
 
     // Fetch utilisateurs
     useEffect(() => {
+        let isMounted = true;
         const fetchUsers = async () => {
             try {
                 const res = await fetch("/api/utilisateurs");
                 const data = await res.json();
+                if (!isMounted) return;
+
                 if (Array.isArray(data)) setUsers(data);
                 else if (data?.success && Array.isArray(data.data)) setUsers(data.data);
                 else setUsers([]);
             } catch {
-                setUsers([]);
+                if (isMounted) setUsers([]);
             }
         };
         fetchUsers();
+
+        return () => { isMounted = false; };
     }, []);
 
     const getLabel = (idCase: number): string => {
@@ -84,16 +88,15 @@ export default function GrilleJoueurs({ joueurs, assignations, setAssignations }
                             key={idCase}
                             onClick={() => handleCaseClick(idCase)}
                             className={`
-                                border-white border-2 rounded-[10px]
-                                bg-[#1E1E1E]/90
-                                shadow-[0_0_4px_2px_rgba(0,0,0,0.6)]
-                                flex items-center justify-center
-                                transition-opacity
-                                ${isVisible ? "opacity-100 cursor-pointer" : "opacity-0 pointer-events-none"}
-                            `}
+                border-white border-2 rounded-[10px]
+                bg-[#1E1E1E]/90
+                shadow-[0_0_4px_2px_rgba(0,0,0,0.6)]
+                flex items-center justify-center
+                transition-opacity
+                ${isVisible ? "opacity-100 cursor-pointer" : "opacity-0 pointer-events-none"}
+              `}
                         >
-
-                        <h1 className="text-white font-bold text-xl">
+                            <h1 className="text-white font-bold text-xl">
                                 {joueur ? joueur.nom : getLabel(idCase)}
                             </h1>
                         </div>
