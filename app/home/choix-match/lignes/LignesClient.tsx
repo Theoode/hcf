@@ -184,14 +184,14 @@ export default function Lignes() {
                     </select>
                 </div>
 
-                <div className="flex items-center justify-center p-8 sm:p-48 w-full h-full overflow-hidden ">
-                    <div className="relative mx-auto flex items-center justify-center  lg:rotate-90">
+                <div className="flex items-center justify-center p-8 lg:pl-[35%] lg:pr-[35%] sm:p-48 w-full h-full overflow-hidden ">
+                    <div className="relative mx-auto flex items-center justify-center lg:rotate-90">
                         <Image
                             src="/terrain.png"
                             alt="TerrainHockey"
                             width={1308}
                             height={648}
-                            className="block w-full h-auto object-contain bg-[#89FBFF]/30 rounded-[62px] lg:m-auto"
+                            className=" w-full h-full object-contain bg-[#89FBFF]/30 rounded-[62px]"
                             priority
                         />
                         <GrilleJoueurs

@@ -96,7 +96,7 @@ export default function GrilleJoueurs({ joueurs, assignations, setAssignations }
                         <div
                             key={idCase}
                             onClick={() => handleCaseClick(idCase)}
-                            className={` relative border-white border-2 rounded-[10px] lg:h-3/5 lg:-rotate-90   bg-[#1E1E1E]/90 shadow-[0_0_4px_2px_rgba(0,0,0,0.6)] flex items-center justify-center transition-opacity ${isVisible ? "opacity-100 cursor-pointer" : "opacity-0 pointer-events-none"}`}
+                            className={` relative border-white border-2 rounded-[10px] lg:h-3/5 lg:-rotate-90 bg-[#1E1E1E]/90 shadow-[0_0_4px_2px_rgba(0,0,0,0.6)] flex items-center justify-center transition-opacity ${isVisible ? "opacity-100 cursor-pointer" : "opacity-0 pointer-events-none"}`}
                         >
                             {joueur && (
                                 <button
