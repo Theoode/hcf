@@ -1,11 +1,12 @@
 "use client";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Match } from "@/app/types/match";
 
 export default function MatchesList() {
     const [matches, setMatches] = useState<Match[]>([]);
     const router = useRouter();
+    const handleBack = () => router.back();
 
     useEffect(() => {
         fetch("/api/match")
@@ -22,6 +23,10 @@ export default function MatchesList() {
 
     return (
         <div className="p-8 max-w-4xl mx-auto">
+            <button onClick={handleBack} className="mb-4 px-3 py-1 bg-black text-white rounded-md hover:bg-gray-800 transition-colors sm:text-xl">
+                Retour
+            </button>
+
             <h1 className="text-2xl font-bold mb-4">Matchs</h1>
             {matches.length === 0 && <p>Aucun match disponible.</p>}
             {matches.map((m) => (

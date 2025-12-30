@@ -17,6 +17,15 @@ export default function GrilleJoueurs({ joueurs, assignations, setAssignations }
         joueurs === 4 ? [4, 5, 6, 8] :
             [1, 3, 5, 7, 9];
 
+    const handleRemoveJoueur = (idCase: number) => {
+        setAssignations((prev) => {
+            const copy = { ...prev };
+            delete copy[idCase];
+            return copy;
+        });
+    };
+
+
     const [users, setUsers] = useState<Joueur[]>([]);
     const [selectedCase, setSelectedCase] = useState<number | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -77,7 +86,7 @@ export default function GrilleJoueurs({ joueurs, assignations, setAssignations }
 
     return (
         <>
-            <div className="absolute inset-0 grid grid-cols-3 grid-rows-3 gap-3 mt-22 mb-12 ml-8 mr-8">
+            <div className="absolute inset-0 grid grid-cols-3 grid-rows-3 gap-3 mt-22 mb-12 ml-8 mr-8 ">
                 {Array.from({ length: totalCases }).map((_, index) => {
                     const idCase = index + 1;
                     const isVisible = visibleCases.includes(idCase);
@@ -87,18 +96,25 @@ export default function GrilleJoueurs({ joueurs, assignations, setAssignations }
                         <div
                             key={idCase}
                             onClick={() => handleCaseClick(idCase)}
-                            className={`
-                border-white border-2 rounded-[10px]
-                bg-[#1E1E1E]/90
-                shadow-[0_0_4px_2px_rgba(0,0,0,0.6)]
-                flex items-center justify-center
-                transition-opacity
-                ${isVisible ? "opacity-100 cursor-pointer" : "opacity-0 pointer-events-none"}
-              `}
+                            className={` relative border-white border-2 rounded-[10px] lg:h-3/5 lg:-rotate-90   bg-[#1E1E1E]/90 shadow-[0_0_4px_2px_rgba(0,0,0,0.6)] flex items-center justify-center transition-opacity ${isVisible ? "opacity-100 cursor-pointer" : "opacity-0 pointer-events-none"}`}
                         >
-                            <h1 className="text-white font-bold text-xl">
+                            {joueur && (
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleRemoveJoueur(idCase);
+                                    }}
+                                    className=" absolute top-1 right-1 text-white text-sm bg-black/50 hover:bg-red-600 rounded-full w-5 h-5 flex items-center justify-center"
+                                    aria-label="Retirer le joueur"
+                                >
+                                    ✕
+                                </button>
+                            )}
+
+                            <h1 className="text-white font-bold text-sm sm:text-base md:text-lg text-center ">
                                 {joueur ? joueur.nom : getLabel(idCase)}
                             </h1>
+
                         </div>
                     );
                 })}

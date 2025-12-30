@@ -161,12 +161,12 @@ export default function Lignes() {
     if (!matchData) return <p>Match introuvable.</p>;
 
     return (
-        <div className="min-h-screen bg-[#F7F7F7] p-4 sm:p-6 lg:p-8">
+        <div className="min-h-screen bg-[#F7F7F7] p-4 sm:p-6 lg:p-8 ">
             <button onClick={handleBack} className="mb-4 px-3 py-1 bg-black text-white rounded-md hover:bg-gray-800 transition-colors sm:text-xl">
                 Retour
             </button>
 
-            <div className="w-full max-w-5xl h-[85vh] border border-black/15 rounded-xl p-4 bg-white shadow-md flex flex-col mt-2 overflow-hidden">
+            <div className="w-full  h-[85vh] border border-black/15 rounded-xl p-4 bg-white shadow-md flex flex-col mt-2 overflow-hidden">
                 <h1 className="text-l sm:text-xl font-semibold mb-2">
                     Créateur de lignes - {matchData.Categorie.nom}
                 </h1>
@@ -184,14 +184,14 @@ export default function Lignes() {
                     </select>
                 </div>
 
-                <div className="flex justify-center items-center p-8 sm:p-48 w-full overflow-hidden">
-                    <div className="relative inline-block max-w-full max-h-[calc(100vh-200px)]">
+                <div className="flex items-center justify-center p-8 sm:p-48 w-full h-full overflow-hidden ">
+                    <div className="relative mx-auto flex items-center justify-center  lg:rotate-90">
                         <Image
                             src="/terrain.png"
                             alt="TerrainHockey"
                             width={1308}
                             height={648}
-                            className="block w-full h-auto object-contain bg-[#89FBFF]/30 rounded-[62px]"
+                            className="block w-full h-auto object-contain bg-[#89FBFF]/30 rounded-[62px] lg:m-auto"
                             priority
                         />
                         <GrilleJoueurs
