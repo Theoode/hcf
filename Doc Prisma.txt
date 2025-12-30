@@ -1,8 +1,0 @@
-//Chaque fois que tu modifies ton schéma
-npx prisma generate
-
-//Si tu ajoutes ou modifies des tables ou colonnes :
-npx prisma migrate dev --name <nom_migration>
-
-//Si tu es en développement et que tu veux repartir de zéro, tu peux utiliser
-npx prisma migrate reset
